@@ -26,7 +26,13 @@ const ColorCount = () => {
         <p>{error}</p>
       ) : count !== null ? (
         <p>
-          Total Colors Discovered: <strong>{count}</strong>
+          Total Colors Discovered: <strong>{count}</strong>{" "}
+          <span
+            style={{ color: "grey", fontStyle: "italic", fontSize: "10px" }}
+          >
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Updated every 60 seconds –
+            cached to keep things fast with high traffic
+          </span>
         </p>
       ) : (
         <p>Loading...</p>
