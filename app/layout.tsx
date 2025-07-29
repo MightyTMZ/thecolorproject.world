@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "https://thecolorproject-world.vercel.app/og.png",
+        url: "https://thecolorproject.vercel.app/og.png",
         alt: "Tom Zhang's Personal Website",
       },
     ],
