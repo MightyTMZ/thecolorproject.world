@@ -12,6 +12,16 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "The Color Project (World)",
   description: "Can we generate all 16,777,216 colors? One click at a time.",
+  openGraph: {
+    images: [
+      {
+        url: "https://thecolorproject-world.vercel.app/open-graph.png",
+        width: 1120,
+        height: 630,
+        alt: "Tom Zhang's Personal Website",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
