@@ -1,5 +1,6 @@
 "use client";
 
+import { backend } from "@/data/constants";
 import React, { useState, useEffect } from "react";
 
 interface Color {
@@ -29,12 +30,35 @@ function RandomColor() {
     setColor(initialColor);
   }, []);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleClick = () => {
+  const handleClick = async () => {
     const newColor = getRandomColor();
+    console.log("new color")
     setColor(newColor);
-    // send a request
+
+    const rgbValues = newColor.rgb
+      .replace("rgb(", "")
+      .replace(")", "")
+      .split(",")
+      .map((v) => parseInt(v.trim()));
+
+    const [r, g, b] = rgbValues;
+
+    try {
+      await fetch(`${backend}/colors/generate/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          hex_code: newColor.hex,
+          r,
+          g,
+          b,
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to save color:", err);
+    }
   };
 
   return (
