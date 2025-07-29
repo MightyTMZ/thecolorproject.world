@@ -5,34 +5,41 @@ import React, { useEffect, useState } from "react";
 
 const TOTAL_POSSIBLE_COLORS = 16777216; // 256^3
 
-const ColorCount = () => {
-  const [count, setCount] = useState<number | null>(null);
+interface ColorCountProps {
+  count: number | null;
+}
+
+const ColorCount: React.FC<ColorCountProps> = ({ count }) => {
+  const [fetchedCount, setFetchedCount] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${backend}/colors/count/`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch color count");
-        return res.json();
-      })
-      .then((data) => setCount(data.total_colors_discovered))
-      .catch((err) => {
-        console.error(err);
-        setError("Error loading color count");
-      });
-  }, []);
+    if (count === null) {
+      fetch(`${backend}/colors/count/`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch color count");
+          return res.json();
+        })
+        .then((data) => setFetchedCount(data.total_colors_discovered))
+        .catch((err) => {
+          console.error(err);
+          setError("Error loading color count");
+        });
+    }
+  }, [count]);
 
-  const percentComplete = count
-    ? ((count / TOTAL_POSSIBLE_COLORS) * 100).toFixed(6)
+  const displayCount = count !== null ? count : fetchedCount;
+  const percentComplete = displayCount
+    ? ((displayCount / TOTAL_POSSIBLE_COLORS) * 100).toFixed(6)
     : null;
 
   return (
     <div style={{ marginTop: "1rem" }}>
       {error ? (
         <p>{error}</p>
-      ) : count !== null ? (
+      ) : displayCount !== null ? (
         <p>
-          Total Colors Discovered: <strong>{count.toLocaleString()}</strong>{" "}
+          Total Colors Discovered: <strong>{displayCount.toLocaleString()}</strong>{" "}
           <span style={{ marginLeft: "1rem", color: "#777" }}>
             ({percentComplete}%)
           </span>

@@ -8,6 +8,12 @@ interface Color {
   hex: string;
 }
 
+interface RandomColorProps {
+  count: number | null;
+  setCount: (n: number) => void;
+  showMessage: (msg: string) => void;
+}
+
 function getRandomColor() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -19,7 +25,7 @@ function getRandomColor() {
   return { rgb, hex };
 }
 
-function RandomColor() {
+const RandomColor: React.FC<RandomColorProps> = ({ count, setCount, showMessage }) => {
   const [color, setColor] = useState<Color>({
     rgb: "0, 0, 0",
     hex: "#000000",
@@ -32,7 +38,6 @@ function RandomColor() {
 
   const handleClick = async () => {
     const newColor = getRandomColor();
-    console.log("new color")
     setColor(newColor);
 
     const rgbValues = newColor.rgb
@@ -44,7 +49,7 @@ function RandomColor() {
     const [r, g, b] = rgbValues;
 
     try {
-      await fetch(`${backend}/colors/generate/`, {
+      const res = await fetch(`${backend}/colors/generate/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +61,15 @@ function RandomColor() {
           b,
         }),
       });
+      const data = await res.json();
+      if (data.status === "new") {
+        showMessage("🎉 Unique color discovered!");
+        if (count !== null) setCount(count + 1);
+      } else {
+        showMessage("Duplicate color! Try again.");
+      }
     } catch (err) {
+      showMessage("Failed to save color.");
       console.error("Failed to save color:", err);
     }
   };
@@ -92,6 +105,6 @@ function RandomColor() {
       </div>
     </>
   );
-}
+};
 
 export default RandomColor;
