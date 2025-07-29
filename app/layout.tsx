@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "The Color Project (World)",
+  title: "The Color Project",
   description: "Can we generate all 16,777,216 colors? One click at a time.",
   openGraph: {
     images: [
