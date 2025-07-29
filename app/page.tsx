@@ -12,7 +12,7 @@ export default function Home() {
         <ColorCount />
         <RandomColor />
 
-        <p>
+        <p style={{ fontSize: "6px" }}>
           💖💖💖 Made by <a href="https://www.tomzhang.info/">Tom Zhang</a>
         </p>
       </div>
