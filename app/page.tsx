@@ -11,6 +11,10 @@ export default function Home() {
         </h1>
         <ColorCount />
         <RandomColor />
+
+        <p>
+          💖💖💖 Made by <a href="https://www.tomzhang.info/">Tom Zhang</a>
+        </p>
       </div>
     </>
   );
