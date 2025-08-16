@@ -31,7 +31,7 @@ export default function Home() {
     <>
       <div className="container mx-auto px-4">
         <h1 className={styles.heading}>
-          Can HUVTSP generate all 16,777,216 colors? One click at a time.
+          Can we generate all 16,777,216 colors? One click at a time.
         </h1>
         <ColorCount count={count} />
         {message && (
