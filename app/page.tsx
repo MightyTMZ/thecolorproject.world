@@ -5,10 +5,12 @@ import RandomColor from "@/components/current/colors";
 import styles from "./page.module.css";
 import ColorCount from "@/components/color-count";
 import { backend } from "@/data/constants";
+import ReturnToGamesButton from "@/components/return-to-tomzhang/ReturnButton";
 
 export default function Home() {
   const [count, setCount] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
+  const [utmSource, setUtmSource] = useState<string | null>(null);
 
   // Fetch count on mount
   useEffect(() => {
@@ -19,6 +21,12 @@ export default function Home() {
       })
       .then((data) => setCount(data.total_colors_discovered))
       .catch(() => setCount(null));
+
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("utm_source");
+    if (source) {
+      setUtmSource(source);
+    }
   }, []);
 
   // Show message for 2 seconds
@@ -30,6 +38,9 @@ export default function Home() {
   return (
     <>
       <div className="container mx-auto px-4">
+        {utmSource === "tomzhang" && <div className="ml-4 mb-4">
+          <ReturnToGamesButton/>
+          </div>}
         <h1 className={styles.heading}>
           Can we generate all 16,777,216 colors? One click at a time.
         </h1>

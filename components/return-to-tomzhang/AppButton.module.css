@@ -1,0 +1,51 @@
+.button {
+  background: linear-gradient(135deg, #ff6b6b, #ff8a00);
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #ff8a00, #ff6b6b);
+}
+
+.button:active {
+  transform: scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.button span {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.button:hover span {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .button {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .button {
+    font-size: 0.8rem;
+  }
+}
