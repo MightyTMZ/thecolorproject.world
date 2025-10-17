@@ -79,7 +79,8 @@ export default function Home() {
 
   return (
     <>
-      <div className="container mx-auto px-4">
+      <SharingBar count={count} />
+      <div className="container mx-auto">
         {utmSource === "tomzhang" && <div className="ml-4 mb-4">
           <ReturnToGamesButton/>
           </div>}
@@ -87,7 +88,6 @@ export default function Home() {
           Can we generate all 16,777,216 colors? One click at a time.
         </h1>
         <ColorCount count={count} />
-        <SharingBar count={count} />
         <ColorHistoryBar
           currentColor={currentColor}
           onColorSelect={handleColorSelect}

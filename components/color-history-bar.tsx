@@ -106,7 +106,7 @@ const ColorHistoryBar: React.FC<ColorHistoryBarProps> = ({
         alignItems: 'center',
         justifyContent: 'flex-start',
         gap: '10px',
-        margin: '20px 0',
+        margin: '20px 0 20px -16px', // Negative left margin to counteract container padding
         padding: '15px',
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         borderRadius: '12px',

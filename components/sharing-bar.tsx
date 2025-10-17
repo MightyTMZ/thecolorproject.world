@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 
 interface SharingBarProps {
   count: number | null;
@@ -8,7 +8,12 @@ interface SharingBarProps {
 
 const SharingBar: React.FC<SharingBarProps> = ({ count }) => {
   const shareText = `Check out The Color Project! We've discovered ${count?.toLocaleString() || 'thousands'} of unique colors so far. Can we generate all 16,777,216 colors? One click at a time.`;
-  const shareUrl = window.location.href;
+  const [shareUrl, setShareUrl] = useState('');
+
+  // execute once the element is mounted
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
 
   const shareToGmail = () => {
     const subject = "The Color Project - Discover Colors Together!";
@@ -39,7 +44,7 @@ const SharingBar: React.FC<SharingBarProps> = ({ count }) => {
       justifyContent: 'flex-start',
       alignItems: 'center',
       gap: '15px',
-      margin: '20px 0',
+      margin: '20px 0 20px -16px', // Negative left margin to counteract container padding
       padding: '15px',
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
       borderRadius: '12px',
@@ -47,12 +52,11 @@ const SharingBar: React.FC<SharingBarProps> = ({ count }) => {
       width: 'fit-content',
     }}>
       <span style={{ 
-        color: '#fff', 
         fontSize: '14px', 
         fontWeight: '500',
         marginRight: '10px'
       }}>
-        Share this project:
+        Share this with a friend! 
       </span>
       
       <button
@@ -158,6 +162,21 @@ const SharingBar: React.FC<SharingBarProps> = ({ count }) => {
           <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="#333"/>
         </svg>
       </button>
+
+      <div
+        style={{
+          background: 'rgba(255, 255, 255, 0.9)',
+          padding: '8px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        title="Share on Snapchat"
+      >
+      <img src="snapchat.svg" alt="SnapChat" width="24" height="24" />
+      </div>
     </div>
   );
 };
