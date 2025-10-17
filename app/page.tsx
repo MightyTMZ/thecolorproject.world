@@ -4,13 +4,25 @@ import React, { useState, useEffect, useCallback } from "react";
 import RandomColor from "@/components/current/colors";
 import styles from "./page.module.css";
 import ColorCount from "@/components/color-count";
+import SharingBar from "@/components/sharing-bar";
+import ColorHistoryBar from "@/components/color-history-bar";
+import ColorModal from "@/components/color-modal";
 import { backend } from "@/data/constants";
 import ReturnToGamesButton from "@/components/return-to-tomzhang/ReturnButton";
+import { showDownloadOptions } from "@/components/download-utils";
+
+interface Color {
+  rgb: string;
+  hex: string;
+}
 
 export default function Home() {
   const [count, setCount] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
   const [utmSource, setUtmSource] = useState<string | null>(null);
+  const [currentColor, setCurrentColor] = useState<Color>({ rgb: "0, 0, 0", hex: "#000000" });
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [userGeneratedColors, setUserGeneratedColors] = useState<Color[]>([]);
 
   // Fetch count on mount
   useEffect(() => {
@@ -35,6 +47,36 @@ export default function Home() {
     setTimeout(() => setMessage(""), 2000);
   }, []);
 
+  // Handle color generation
+  const handleColorGenerated = useCallback((color: Color) => {
+    setCurrentColor(color);
+    // Add to user's generated colors list
+    setUserGeneratedColors(prev => [...prev, color]);
+  }, []);
+
+  // Handle color selection from history
+  const handleColorSelect = useCallback((color: Color) => {
+    setCurrentColor(color);
+  }, []);
+
+  // Handle modal actions
+  const handleShowFullList = useCallback(() => {
+    setIsModalOpen(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
+
+  const handleDownloadColors = useCallback(() => {
+    const success = showDownloadOptions(userGeneratedColors);
+    if (success) {
+      showMessage("✅ Colors downloaded successfully!");
+    } else {
+      showMessage("❌ Failed to download colors. Please try again.");
+    }
+  }, [showMessage, userGeneratedColors]);
+
   return (
     <>
       <div className="container mx-auto px-4">
@@ -45,6 +87,13 @@ export default function Home() {
           Can we generate all 16,777,216 colors? One click at a time.
         </h1>
         <ColorCount count={count} />
+        <SharingBar count={count} />
+        <ColorHistoryBar
+          currentColor={currentColor}
+          onColorSelect={handleColorSelect}
+          onShowFullList={handleShowFullList}
+          userColors={userGeneratedColors}
+        />
         {message && (
           <div
             style={{
@@ -66,6 +115,14 @@ export default function Home() {
           count={count}
           setCount={setCount}
           showMessage={showMessage}
+          onColorGenerated={handleColorGenerated}
+        />
+        <ColorModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onColorSelect={handleColorSelect}
+          onDownloadColors={handleDownloadColors}
+          userColors={userGeneratedColors}
         />
         <p style={{ fontSize: "6px" }}>
           💖💖💖 Made by <a href="https://www.tomzhang.info/">Tom Zhang</a>

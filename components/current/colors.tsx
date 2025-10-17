@@ -12,6 +12,7 @@ interface RandomColorProps {
   count: number | null;
   setCount: (n: number) => void;
   showMessage: (msg: string) => void;
+  onColorGenerated?: (color: Color) => void;
 }
 
 function getRandomColor() {
@@ -25,7 +26,7 @@ function getRandomColor() {
   return { rgb, hex };
 }
 
-const RandomColor: React.FC<RandomColorProps> = ({ count, setCount, showMessage }) => {
+const RandomColor: React.FC<RandomColorProps> = ({ count, setCount, showMessage, onColorGenerated }) => {
   const [color, setColor] = useState<Color>({
     rgb: "0, 0, 0",
     hex: "#000000",
@@ -65,8 +66,16 @@ const RandomColor: React.FC<RandomColorProps> = ({ count, setCount, showMessage 
       if (data.status === "new") {
         showMessage("🎉 Unique color discovered!");
         if (count !== null) setCount(count + 1);
+        // Notify parent component about the new color
+        if (onColorGenerated) {
+          onColorGenerated(newColor);
+        }
       } else {
         showMessage("Duplicate color! Try again.");
+        // Still notify parent about the color (even if duplicate)
+        if (onColorGenerated) {
+          onColorGenerated(newColor);
+        }
       }
     } catch (err) {
       showMessage("Failed to save color.");
